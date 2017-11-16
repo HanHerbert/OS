@@ -139,3 +139,59 @@
 
 
 */
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <unistd.h>
+
+#define PHILO_NUM 5
+sem_t chopstick[PHILO_NUM];
+sem_t mutex;
+sem_t room;
+
+void *philosopher(void *arg)
+{
+    int num;
+    num = *(int *)arg;
+    while(1)
+    {
+        sem_wait(&room);//最多只允许4个哲学家拿起左边的筷子
+        sem_wait(&mutex);//互斥锁保证原子操作
+        sem_wait(&chopstick[num]);
+        sem_wait(&chopstick[(num+1)%PHILO_NUM]);
+        sem_post(&mutex);
+        printf("philosopher %d eat\n",num);
+        sem_post(&chopstick[num]);
+        sem_post(&chopstick[(num+1)%PHILO_NUM]);        
+        sem_post(&room);
+        sleep(1);
+    }
+}
+
+int main()
+{
+    pthread_t philo_id[PHILO_NUM];
+    int i = 0;
+    int arg[PHILO_NUM];
+    for(i=0;i<PHILO_NUM;i++)
+    {
+        sem_init(chopstick+i,0,1);
+        arg[i] = i;
+    }
+    sem_init(&mutex,0,1);
+    sem_init(&room,0,4);
+    for(i=0;i<PHILO_NUM;i++)
+    {
+        pthread_create(philo_id+i,NULL,philosopher,(void *)&arg[i]);
+    }
+
+    while(1)
+    {
+        sleep(1);
+    }
+
+    return 0;
+}
