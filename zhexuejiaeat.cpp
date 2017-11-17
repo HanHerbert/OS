@@ -1,84 +1,22 @@
-// #include <pthread.h>  
-// #include <stdio.h>  
-  
-// #define N 5  
-// #define LEFT (i+N-1)%N  
-// #define RIGHT (i+1)%N  
-// #define THINK_TIME 3  
-// #define EAT_TIME 2  
-  
-// enum { THINKING, HUNGRY, EATING } state[N];  
-  
-// pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER, s[N];  
-  
-// void test(int i)  
-// {  
-//     if (state[i] == HUNGRY  
-//      && state[LEFT] != EATING  
-//      && state[RIGHT] != EATING)  
-//     {  
-//         state[i] = EATING;  
-//         pthread_mutex_unlock(&s[i]);  
-//     }  
-// }  
-  
-// void take_forks(int i)  
-// {  
-//     pthread_mutex_lock(&mutex);  
-//     state[i] = HUNGRY;  
-//     test(i);  
-//     pthread_mutex_unlock(&mutex);  
-//     pthread_mutex_lock(&s[i]);  
-// }  
-  
-// void put_forks(int i)  
-// {  
-//     pthread_mutex_lock(&mutex);  
-//     state[i] = THINKING;  
-//     test(LEFT);  
-//     test(RIGHT);  
-//     pthread_mutex_unlock(&mutex);  
-// }  
-  
-// void think(int i)  
-// {  
-//     printf("philosopher %d is thinking...\n", i);  
-//     sleep(THINK_TIME);  
-// }  
-  
-// void eat(int i)  
-// {  
-//     printf("philosopher %d is eating...\n", i);  
-//     sleep(EAT_TIME);  
-// }  
-  
-// void* phi(void* vargp)  
-// {  
-//     int i = *(int*)vargp;  
-//     while (1)  
-//     {  
-//         think(i);  
-//         take_forks(i);  
-//         eat(i);  
-//         put_forks(i);  
-//     }  
-//     return NULL;  
-// }  
-  
-// int main()  
-// {  
-//     int i;  
-//     pthread_t tid[N];  
-//     for (i = 0; i < N; i++)  
-//         pthread_create(&tid[i], NULL, phi, (void*)(&i));  
-//     for (i = 0; i < N; i++)  
-//         pthread_join(tid[i], NULL);  
-//     return 0;  
-// } 
-
 
 /*
     created by Herbert on 16 Nov,2017   
+    
+    预备知识：
+        信号量：信号量是管理相应临界区的公有资源，它代表可用资源实体。
+            在操作系统中，信号量sem是一个整数。在sem大于等于零时代表
+            可供并发进程使用的资源实体的数目，但sem小于零时则代表则代表
+            等待使用临界区的进程的数目。
+
+            sem的初始值应该大于零，在建立一个信号量的时候，必须说明信号量
+            的代表的意义，以及建立相应的数据结构，以便指向那些等待使用该
+            临界区的进程。
+        
+        P、V原语：
+            信号量的数值仅能由P、V的操作改变（P代表 pass，V代表 increment）
+
+            一次P原语操作使得信号量sem减一，一次V原语操作使得信号量sem加一
+
 
         问题描述：设有五个哲学家，共享一张放有五把椅子的桌子，没人分得一把椅子。但是，桌子上
     总共有五支筷子，在每人两边分开各放一支。哲学家们在肚子饥饿时才会试图分两次从两边拾起筷子
@@ -134,64 +72,133 @@
                 }
             end
     （3）
-        一人拿一支筷子时吃不上饭。
+        一人拿一支筷子时所有人都吃不上饭。
 
 
 
 */
 
+/*
+让奇数号的哲学家先取右手边的筷子，让偶数号的哲学家先取左手边的筷子。这样，任何一个哲学家
+拿到一支筷子后，就已经阻止了他邻座的一个哲学家吃饭的企图，除非某个哲学家一直吃下去，否则不会有人
+饿死。
+While(true){  
+    if( i  %  2 == 0){          //偶数号哲学家  
+            P(左边筷子对应的信号量)  
+            P(右边筷子对应的信号量)  
+            拿起两只筷子吃饭  
+            V(右边筷子对应的信号量)  
+            V(左边筷子对应的信号量)  
+    }else{                  //奇数号哲学家  
+            P(右边筷子对应的信号量)  
+            P(左边筷子对应的信号量)  
+            拿起两只筷子吃饭  
+            V(左边筷子对应的信号量)  
+            V(右边筷子对应的信号量)  
+    }  
+    吃饱后思考 
+}  
+*/
 
-#include <stdio.h>
-#include <stdlib.h>
+/*
+int sem_init(sem_t *sem,int pshared,unsigned int value);//
+        sem_init用于对指定信号初始化，pshared为0，
+        表示信号在当前进程的多个线程之间共享，value表示初始化信号的值。 
+
+int sem_wait(sem_t *sem);
+
+        sem_wait可以用来阻塞当前线程，直到信号量的值大于0，解除阻塞。
+        解除阻塞后，sem的值-1，表示公共资源被执行减少了。
+        例如：如果你对一个值为2的信号量调用sem_wait(),线程将会继续执行，
+        信号量的值将-1。当初始化value=0后，使用sem_wai会阻塞这个线程，
+        这个线程函数就会等待其它线程函数调用
+        
+int sem_post(sem_t *sem);
+
+        sem_post用于增加信号量的值+1，当有线程阻塞在这个信号量上时，
+        调用这个函数会使其中的一个线程不在阻塞，选择机制由线程的调度策略决定。 
+*/
+
+#include <iostream>
+#include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include <unistd.h>
+#include <cstdio>
+#define N 5//哲学家人数
+#define LEFT i
+#define RIGHT (i+1)%N
+using namespace std;
 
-#define PHILO_NUM 5
-sem_t chopstick[PHILO_NUM];
-sem_t mutex;
-sem_t room;
+class Semaphore {  //定义Semaphore类
+private:  
+    sem_t sem;  //定义信号量
+public:  
+    Semaphore(int value = 1) {  
+        sem_init(&sem,0,value); //初始化信号量,0表示信号量在线程间共享  
+    }  
+    void P() {  
+        sem_wait(&sem); //等待信号，获取拥有权  
+    }  
+    void V() {  
+        sem_post(&sem); //释放信号，释放拥有权  
+    }  
+};  
 
-void *philosopher(void *arg)
-{
-    int num;
-    num = *(int *)arg;
-    while(1)
-    {
-        sem_wait(&room);//最多只允许4个哲学家拿起左边的筷子
-        sem_wait(&mutex);//互斥锁保证原子操作
-        sem_wait(&chopstick[num]);
-        sem_wait(&chopstick[(num+1)%PHILO_NUM]);
-        sem_post(&mutex);
-        printf("philosopher %d eat\n",num);
-        sem_post(&chopstick[num]);
-        sem_post(&chopstick[(num+1)%PHILO_NUM]);        
-        sem_post(&room);
-        sleep(1);
-    }
-}
+Semaphore mutex[N];//定义N个信号量
+pthread_t thread[N];//定义N个线程
+int id[N];
 
-int main()
-{
-    pthread_t philo_id[PHILO_NUM];
-    int i = 0;
-    int arg[PHILO_NUM];
-    for(i=0;i<PHILO_NUM;i++)
-    {
-        sem_init(chopstick+i,0,1);
-        arg[i] = i;
-    }
-    sem_init(&mutex,0,1);
-    sem_init(&room,0,4);
-    for(i=0;i<PHILO_NUM;i++)
-    {
-        pthread_create(philo_id+i,NULL,philosopher,(void *)&arg[i]);
-    }
+void *solve(void* param);//解决算法
 
-    while(1)
-    {
-        sleep(1);
-    }
+void thread_create();//进程创建
 
+void thread_wait();//进程等待
+
+int main(){
+    for(int i = 0; i < N; i++) {  
+        id[i] = i;  
+    }  
+    thread_create();  
+    thread_wait(); 
     return 0;
 }
+
+void *solve(void* param){
+    int i = *((int *)param);
+    while(true){
+        if(i % 2 == 0){//如果是偶数，则先取左手边的筷子
+            mutex[LEFT].P();
+            mutex[RIGHT].P();
+            cout<<"哲学家"<<i<<"吃饭"<<endl;
+            mutex[RIGHT].V();
+            mutex[LEFT].V();
+        }
+        else{//如果是奇数，则先取右手边的筷子
+            mutex[RIGHT].P();  
+            mutex[LEFT].P();  
+            cout<<"哲学家"<<i<<"吃饭"<<endl; 
+            mutex[LEFT].V();  
+            mutex[RIGHT].V();  
+        }
+        sleep(1);
+    }
+    pthread_exit(NULL);
+}
+
+void thread_create() { //进程创建  
+    int tmp;  
+    for(int i = 0; i < N; i++) {  
+        tmp = pthread_create(&thread[i],NULL,solve,&id[i]);  
+        if(tmp != 0) {  
+            cout<<"线程"<<i<<"创建失败"<<endl; 
+        }  
+    }  
+} 
+
+void thread_wait() {  //进程等待
+    for(int i = 0; i < N; i++) {  
+        pthread_join(thread[i],NULL);  
+        printf("线程%d结束\n",i);  
+    }  
+}  
+
