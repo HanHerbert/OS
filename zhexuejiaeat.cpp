@@ -156,7 +156,7 @@ void thread_wait();//进程等待
 
 int main(){
     for(int i = 0; i < N; i++) {  
-        id[i] = i;  
+        id[i] = i;  //为哲学家编号
     }  
     thread_create();  
     thread_wait(); 

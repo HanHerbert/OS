@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>个人简历</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.0/remodal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.0/remodal-default-theme.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/remodal/1.1.0/remodal.min.js"></script>
+    <script src="static/js/script.js"></script>
+</head>
+
+<body>
+    <div class="container" id="cv">
+        <div class="side">
+            <div class="me">
+                <div class="portrait"></div>
+                <div class="remodal remodal-img" data-remodal-id="portrait-modal">
+                    <h3>请输入图片URL地址：</h3>
+                    <br/>
+                    <input type="text" id="avatar-url">
+                    <button data-remodal-action="confirm" class="remodal-confirm">确定</button>
+                </div>
+                <h1 id="username" >赵海亮</h1>
+                <h4 id="persona-tag" >机器学习 / 人工智能 / 数据挖掘</h4>
+            </div>
+            <div class="profile info-unit">
+                <h2 class="info-header"><i class="iconfont icon-person"></i> <span class="info-title">基本信息</span></h2>
+                <hr>
+                <ul class="info-list">
+                    <li>
+                        <label class="left-label">姓名</label><span class="label-value">赵海亮</span></li>
+                    <li>
+                        <label class="left-label">学历</label><span class="label-value">本科</span></li>
+                    <li>
+                        <label class="left-label">毕业院校</label><span class="label-value">武汉理工大学</span></li>
+                    <li>
+                        <label class="left-label">毕业年份</label><span class="label-value">2019</span></li>
+                </ul>
+            </div>
+            <div class="contact info-unit">
+                <h2 class="info-header"><i class="iconfont icon-call"></i> <span class="info-title">联系方式</span></h2>
+                <hr>
+                <ul class="info-list">
+                    <li>
+                        <label class="left-label">手机</label><span class="label-value">15172392385</span></li>
+                    <li>
+                        <label class="left-label">邮箱</label><span class="label-value">hliangzhao@163.com</span></li>
+                    <li>
+                        <label class="left-label">Hacker Rank</label><span class="label-value">https://www.hackerrank.com/hliangzhao</span></li>
+                    <li>
+                        <label class="left-label">Github</label><span class="label-value">https://github.com/NarcissusHliangZhao</span></li>
+                </ul>
+            </div>
+            <div class="skill info-unit">
+                <h2 class="info-header"><i class="iconfont icon-star"></i> <span class="info-title">技能点</span></h2>
+                <hr>
+                <ul class="progress-list">
+                    <li>
+                        <label class="left-label">Python/R</label>
+                        <progress value="90" max="100"></progress>
+                    </li>
+                    <li>
+                        <label class="left-label">Java EE</label>
+                        <progress value="70" max="100"></progress>
+                    </li>
+                    <li>
+                        <label class="left-label">统计学习理论</label>
+                        <progress value="85" max="100"></progress>
+                    </li>
+                    <li>
+                        <label class="left-label">MATLAB</label>
+                        <progress value="95" max="100"></progress>
+                    </li>
+                </ul>
+            </div>
+            <div class="stack info-unit">
+                <h2 class="info-header"><i class="iconfont icon-build"></i> <span class="info-title">技术栈</span></h2>
+                <hr>
+                <ul class="stack-list">
+                    <li>
+                        <label class="left-label">数据处理</label><span class="label-value">掌握MySQL等数据库技术，能够运用统计编程语言进行数据分析</span></li>
+                    </li>
+                    <li>
+                        <label class="left-label">机器学习</label><span class="label-value">能够熟练使用MATLAB、R、Python提供的机器学习软件包对数据集建立特征工程</span></li>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="code info-unit">
+                <h2 class="info-header"><i class="iconfont icon-weixin"></i> <span class="info-title">个人微信</span></h2>
+                <hr>
+                <div class="weixin">
+                    <img src="static/image/weixin.JPG" alt="">
+                </div>
+            </div>
+            <div class="remodal remodal-img" data-remodal-id="weixin-modal">
+                <h3>请输入图片URL地址：</h3>
+                <br/>
+                <input type="text" id="weixin-url">
+                <button data-remodal-action="confirm" class="remodal-confirm">确定</button>
+            </div>
+        </div>
+        <div class="main">
+            <div class="education info-unit right-list">
+                <h2 class="info-header"><i class="iconfont icon-education"></i> <span class="info-title">教育经历</span></h2>
+                <hr>
+                <ul class="experience-list">
+                    <li>
+                        <h3>武汉理工大学-计算机科学与技术（本科）2015-2019</h3>
+                    </li>
+                </ul>
+            </div>
+            <div class="work info-unit right-list">
+                <h2 class="info-header"><i class="iconfont icon-work"></i> <span class="info-title">成绩相关</span></h2>
+                <hr>
+                <ul class="experience-list">
+                    <li>
+                        <h3>GPA</h3>
+                        <p>大一与大二两年学分绩4.04</p>
+                    </li>
+                    <li>
+                        <h3>四六级</h3>
+                        <p>CET4: 610 CET6: 576</p>
+                    </li>
+                    <li>
+                        <h3>数学课程</h3>
+                        <p>高等数学（第一学期）: 100</p>
+                        <p>高等数学（第二学期）: 92.2</p>
+                        <p>概率论与数理统计: 95.6</p>
+                        <p>线性代数: 92.2</p>
+                        <p>数值分析: 99</p>
+                    </li>
+                </ul class="experience-list">
+            </div>
+            <div class="project info-unit right-list">
+                <h2 class="info-header"><i class="iconfont icon-project"></i> <span class="info-title">个人项目</span></h2>
+                <hr>
+                <ul class="experience-list">
+                    <li>
+                        <h3>智能导盲机器人（已结题国创项目）</h3>
+                        <p>设计了基于GPS的多传感器导盲机器人，利用红外传感器、视觉传感器、超声波传感器相结合的结构可以实现室外避障、红绿灯与斑马线的识别以及盲道的识别，提高盲人出行避障的准确性。<br/>
+                        </p>
+                        <p>此外借助语音识别、语音提醒可以提高盲人控制机器人的难度。而附加的对应app联网定位、语音通话功能可以使盲人的家属了解盲人的动态与危险状况，便于及时发现危险与找回盲人。</p>
+                    </li>
+                    <li>
+                        <h3>MatModel（GitHub项目）</h3>
+                        <p>总结数学建模相关模型，并给出了可运行MATLAB脚本（地址见GitHub主页）。具体内容包括:层次分析法、元胞自动机、模糊数学、图论模型、启发式算法（神经网络，模拟退火，遗传算法）、各类规划模型、时间序列等。
+                        </p>
+                    </li>
+                    <li>
+                        <h3>Data-Analysis-in-R（暂未投放至GitHub）</h3>
+                        <p>根据部分机器学习书籍，用R语言实现对数据集进行分析的可运行代码。包括但不限于数据探索与预处理（常用统计量计算、数据可视化）、回归分析模型（岭回归、LASSO）、分类模型（决策树、Logistics模型、SVM）、推荐算法。
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="trophy info-unit">
+                <h2 class="info-header"><i class="iconfont icon-trophy"></i> <span class="info-title">获得的省级及以上奖项</span></h2>
+                <hr>
+                <ul class="experience-list">
+                    <li>
+                        <h3>全国大学生英语竞赛</h3>
+                        <p>2016年：三等奖</p>
+                        <p>2017年：二等奖</p>
+                    </li> 
+                    <li>
+                        <h3>第八届全国大学生数学竞赛</h3>
+                        <p>三等奖</p>
+                    </li> 
+                    <li>
+                        <h3>第八届蓝桥杯大赛</h3>
+                        <p>C/C++组三等奖</p>
+                    </li>
+                    <li>
+                        <h3>第十届华中地区数学建模大赛</h3>
+                        <p>经典赛三等奖</p>
+                    </li>
+            </div>
+            <div class="aboutme info-unit right-paragraph">
+                <h2 class="info-header"><i class="iconfont icon-flower"></i> <span class="info-title">自我评价</span></h2>
+                <hr>
+                <p>虽然原本是因为对计算机专业的有强烈兴趣才转入本学院，但并没有认真思考过自己究竟想要研究什么。为了确定未来的研究方向和工作方向，走了不少弯路，踩过的坑不可谓不多。</p>
+                <p>曾经盲目地学习过各种目前流行的框架和技术，但是却总不能平衡学业成绩和实际的代码能力，造成的结果便是“贪多嚼不烂”。经过两年的磨练，终于找准了自己有兴趣并擅长的领域——即与数理逻辑和概率统计知识紧密关联的数据挖掘与机器学习方向。</p>
+                <p>使用MATLAB、R与Python对数据集进行分析建模是必备的能力，借助数学建模培训的契机，自主推导相关模型的数学理论并转换为可执行代码，对数据有了更深一层的感悟。</p>
+                <p>能够从事自己爱好并擅长的领域，从来都是可遇不可求的，希望能够找到这样的工作。</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
