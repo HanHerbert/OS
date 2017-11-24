@@ -38,6 +38,7 @@ void check_phi_state(int phi_id){
 void Do_take_forks(int phi_id){
 	pthread_mutex_lock(&mutex);
 	phi_state[phi_id]=hungry;
+	printf("philosopher %d is hungry now !\n",phi_id);
 	check_phi_state(phi_id);
 	pthread_mutex_unlock(&mutex);
 	pthread_mutex_lock(&state[phi_id]);
