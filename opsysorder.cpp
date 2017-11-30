@@ -31,18 +31,18 @@ int main()
      printf("模拟磁盘移臂调度程序\n");
      printf("***********************************************\n");
      printf("***********************************************\n");
-     int now=143;
+     int now=53;
      printf("start: %d\n",now);
 
      
 
-     int a[]={86,145,93,179,95,150,103,176,132};
+     int a[]={98, 183, 37, 122, 14, 124, 65, 67};
      fcfs(a,now);
-     int aa[]={86,145,93,179,95,150,103,176,132};
+     int aa[]={98, 183, 37, 122, 14, 124, 65, 67};
      sstf(aa,now);
-     int aaa[]={86,145,93,179,95,150,103,176,132};
-     scan(aaa,now);
-     int aaaa[]={86,145,93,179,95,150,103,176,132};
+    //  int aaa[]={98, 183, 37, 122, 14, 124, 65, 67};
+    //  scan(aaa,now);
+     int aaaa[]={98, 183, 37, 122, 14, 124, 65, 67};
      cscan(aaaa,now);
 
      return 0;
@@ -51,21 +51,22 @@ int main()
 void fcfs(int f[],int fnow){//先来先服务
      int s=0,i;
      printf("先来先服务寻道顺序为：");
-     for(i=0;i<9;i++)
+     for(i=0;i<8;i++)
           {
                s=s+fabs(f[i] - fnow);
                printf("%d ",f[i]);
+               fnow = f[i];
           }
-     printf("\nFIFO和为:%d\n",s);
+     printf("\nFCFS和为:%d\n",s);
 }
 
 void sstf(int m[],int mnow){//最短寻道时间优先
      int n,k,tmp,x,sum=0;
      printf("最短寻道时间优先服务顺序：");
-     for(n=0;n<9;n++){
+     for(n=0;n<8;n++){
           tmp = fabs(m[0]-mnow);
           x = 0;
-          for(k=1;k<9-n;k++){
+          for(k=1;k<8-n;k++){
                if(fabs(m[k]-mnow)<tmp){
                     x = k;
                     tmp = fabs(m[k]-mnow);
@@ -74,51 +75,53 @@ void sstf(int m[],int mnow){//最短寻道时间优先
           printf("%d ",m[x]);
                sum =sum +tmp;
                mnow = m[x];
-               for(k=0;k<9-x-n;k++){
+               for(k=0;k<8-x-n;k++){
                     m[x+k]=m[x+k+1];
                }
      }
      printf("\nSSTF道数和为：%d\n",sum);
 }
 
-void scan(int d[],int dnow){//扫描算法
-     int x,y,sum=0;
-     printf("扫描服务顺序：");
-     sort(d,9);
-     for(x = 0; x < 9; x++){
-          if(d[x] > dnow){
-               y = x;
-               break;
-          }
-     }
-     for(x = y; x < 9; x++){
-          printf("%d ",d[x]);
-          sum = sum + fabs(dnow-d[x]);
-     }
-     for(x = y-1;x>=0;x--){
-          printf("%d ",d[x]);
-          sum = sum + fabs(dnow-d[x]);
-     }
-     printf("\nSCAN道数和为：%d\n",sum);
-}
+// void scan(int d[],int dnow){//扫描算法
+//      int x,y,sum=0;
+//      printf("扫描服务顺序：");
+//      sort(d,8);
+//      for(x = 0; x < 8; x++){
+//           if(d[x] > dnow){
+//                y = x;
+//                break;
+//           }
+//      }
+//      for(x = y; x < 8; x++){
+//           printf("%d ",d[x]);
+//           sum = sum + fabs(dnow-d[x]);
+//      }
+//      for(x = y-1;x>=0;x--){
+//           printf("%d ",d[x]);
+//           sum = sum + fabs(dnow-d[x]);
+//      }
+//      printf("\nSCAN道数和为：%d\n",sum);
+// }
 
 void cscan(int e[],int enow){//循环扫描
      int x,y,sum =0;
-     sort(e,9);
+     sort(e,8);
      printf("循环扫描顺序为：");
-     for(x = 0; x < 9; x++){
-          if(e[x] > enow){
+     for(x = 0; x < 8; x++){
+          if(e[x] <= enow){
                y = x;
                break;
           }
      }
-     for(x = y; x < 9; x++ ){
+     for(x = y; x < 8; x++ ){
           printf("%d ",e[x]);
           sum = sum + fabs(enow-e[x]);
+          enow = e[x];
      }
      for(x = 0;x < y; x++){
           printf("%d ",e[x]);
           sum = sum + fabs(enow-e[x]);
+          enow = e[x];
      }
      printf("\n电梯算法道数和为：%d\n",sum);
 
